@@ -1,0 +1,11 @@
+@import url(//fonts.googleapis.com/earlyaccess/cwtexhei.css);
+*{
+    font-family: 'cwTeXHei', sans-serif;
+}
+body>*{
+    width: 720px;
+    margin: 0 auto;
+}
+footer{
+    background: #000;
+}
