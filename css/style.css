@@ -6,6 +6,90 @@ body>*{
     width: 720px;
     margin: 0 auto;
 }
+content {
+    display: block;
+}
 footer{
     background: #000;
+}
+
+/**
+inspired by https://codepen.io/philhoyt/pen/ujHzd
+*/
+
+nav
+{
+	margin-top:15px;
+    display: block;
+}
+
+nav ul
+{
+	list-style:none;
+	position:relative;
+	display: inline-block;
+	margin:0;
+	padding:0
+}
+
+nav ul a
+{
+	display:block;
+	color:#333;
+	text-decoration:none;
+	font-weight:700;
+	font-size:15px;
+	line-height:2em;
+	padding:0 15px;
+}
+
+nav ul li
+{
+	position:relative;
+	float:left;
+	margin:0;
+	padding:0
+}
+
+nav ul li.current-menu-item
+{
+	background:#ddd
+}
+
+nav ul li:hover
+{
+	background:#f6f6f6
+}
+
+nav ul ul
+{
+	display:none;
+	position:absolute;
+	top:100%;
+	left:0;
+	background:#fff;
+	padding:0
+}
+
+nav ul ul li
+{
+	float:none;
+	width:200px
+}
+
+nav ul ul a
+{
+	line-height:120%;
+	padding:10px 15px
+}
+
+nav ul ul ul
+{
+	top:0;
+	left:100%
+}
+
+nav ul li:hover > ul
+{
+	display:block
 }
