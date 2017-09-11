@@ -35,13 +35,13 @@
     <ul>
         <li ng-repeat="item in menu">
             <span ng-if="item.children[0].url=='#'">
-            {{item.children[0].title}}
+            {{item.title}}
             </span>
             <a href="{{item.children[0].url}}" ng-click="changeContent($event)" ng-if="item.children[0].url!='#' && item.children[0].url.substr(0,4) != 'http'">
-            {{item.children[0].title}}
+            {{item.title}}
             </a>
             <a href="{{item.children[0].url}}" target="_blank" ng-if="item.children[0].url!='#' && item.children[0].url.substr(0,4) == 'http'">
-            {{item.children[0].title}}
+            {{item.title}}
             </a>
             <ul>
                 <li ng-repeat="child in item.children" ng-if="$index > 0">

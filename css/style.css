@@ -118,7 +118,9 @@ nav ul li:hover > ul
 	display:block
 }
 
-
+/*
+inspired by https://codepen.io/palimadra/pen/lKgDd
+*/
 blockquote {
     font-family: Georgia, serif;
     font-size: 18px;
