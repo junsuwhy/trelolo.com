@@ -4,6 +4,8 @@ showdown.setOption('simpleLineBreaks',true);
 showdown.setOption('headerLevelStart',2);
 showdown.setOption('tables',true);
 
+var treloloBoardID = 'XAL44x7M';
+
 var app = angular.module("page", ['ngSanitize']).config(function($sceDelegateProvider) {  
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
@@ -11,35 +13,26 @@ var app = angular.module("page", ['ngSanitize']).config(function($sceDelegatePro
         // Allow loading from our assets domain. **.
         'https://trello.com/**'
       ]);
+}).config(function($locationProvider) {
+    $locationProvider.html5Mode({ enabled: true, requireBase: false, rewriteLinks: false });
 });
 app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
-    init = function(){
-        doRouter($scope);
-        
-        var jsonUrl = $scope.jsonUrl;
-        
-        $http.get(jsonUrl)
-            .then(function(response){
-                $scope.myData = response.data;
-                setHeader($scope);
-                setMenu($scope);
-                setContent($scope);
-            });        
-    }
     
     doRouter = function($scope){
-        if(!location.search){
+        if(!location.search || location.search.match(treloloBoardID)){
             search = '?XAL44x7M';
+            $scope.isTreloloDotCom = true;
         }else{
             search = location.search;
         }
         var reg = RegExp(/\?([^\/]+)(\/([^\/]+))?/);;
         var router = reg.exec(search);
         if(router){
-            $scope.boardID = router[1];
-            console.log(router[3]);
+            $scope.boardID = router[1]
             if(router[3]){
                 $scope.cardID = router[3];    
+            }else{
+                $scope.isHome = true;
             }
             $scope.jsonUrl ='https://trello.com/b/'+$scope.boardID+'.json';
         }
@@ -67,6 +60,9 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         
         $scope.myData.cards.forEach(function(item){
             if(!item.closed){
+                if(!$scope.homeCardId){
+                    $scope.homeCardId = item.shortLink;
+                }
                 parent = getMenuParent($scope, item.idList);
                 if(parent){
                     if(!item.desc){
@@ -94,8 +90,13 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     }
     
     setContent = function($scope){
+        $scope.isHome = false;
         if(!$scope.cardID){
-            $scope.cardID = $scope.myData.cards[0].shortLink;
+            $scope.cardID = $scope.homeCardId;
+            $scope.isHome = true;
+        }
+        else if($scope.cardID == $scope.homeCardId){
+            $scope.isHome = true;
         }
         var cards = $scope.myData.cards.forEach(function(item){
             if(item.shortLink == $scope.cardID){
@@ -117,8 +118,6 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         return returnObj;
     };
     
-    init();
-    
     $scope.changeContent = function changeContent($event){
         var obj = $event.target;
         var href = obj.getAttribute('href');
@@ -128,6 +127,45 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             $scope.cardID = href.match(/\?(.+)\/(.+)/)[2];
             $event.preventDefault();
             setContent($scope);
+            history.pushState(null,'',href);
         }
     }
+
+    $scope.doTransUrlToTrelolo = function(){
+//        this.urlFromTrello = 'https://trello.com/b/XAL44x7M/boardname';
+        var reg = RegExp(/^https:\/\/trello\.com\/b\/([^\/]+)/);
+        var regResult = reg.exec(this.urlFromTrello);
+        if(regResult){
+            this.urlToTrelolo = 'http://trelolo.com/?'+regResult[1];
+        }
+    }
+
+    $scope.doCopyText = function(){
+        // copy by https://stackoverflow.com/questions/400212/how-do-i-copy-to-the-clipboard-in-javascript
+        var copyTextarea = document.querySelector('.url-to-trelolo');
+          copyTextarea.select();
+
+          try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+          } catch (err) {
+            console.log('Oops, unable to copy');
+          }
+    }
+
+    init = function(){
+        doRouter($scope);        
+        var jsonUrl = $scope.jsonUrl;
+        $http.get(jsonUrl)
+            .then(function(response){
+                $scope.myData = response.data;
+                setHeader($scope);
+                setMenu($scope);
+                setContent($scope);
+            });
+        $scope.urlFromTrello = 'https://trello.com/b/XAL44x7M';
+        $scope.doTransUrlToTrelolo();
+    }
+
+    init();
 }]);

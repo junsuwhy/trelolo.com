@@ -153,3 +153,32 @@ blockquote cite {
 blockquote cite:before {
     content: "\2014 \2009";
 }
+
+#transfer-url-to-trelolo {
+    position: relative;
+/*    background: #eee;*/
+    text-align: center;
+    padding: 40px 0;
+}
+#transfer-url-to-trelolo::before{
+    background: #eee;
+    width: 100vw;
+    height: 100%;
+    content: " ";
+    display:block;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: calc((100% - 100vw)/2);
+}
+
+#transfer-url-to-trelolo input{
+    text-align: center;
+    display: block;
+    width: 50%;
+    margin: 0 auto 10px;
+    
+}
+.url-to-trelolo{
+    
+}
