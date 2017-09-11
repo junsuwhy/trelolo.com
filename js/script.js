@@ -143,7 +143,6 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     }
 
     $scope.doTransUrlToTrelolo = function(){
-//        this.urlFromTrello = 'https://trello.com/b/XAL44x7M/boardname';
         var reg = RegExp(/^https:\/\/trello\.com\/b\/([^\/]+)/);
         var regResult = reg.exec(this.urlFromTrello);
         if(regResult){
@@ -174,7 +173,6 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                 setMenu($scope);
                 setContent($scope);
             });
-        $scope.urlFromTrello = 'https://trello.com/b/XAL44x7M';
         $scope.doTransUrlToTrelolo();
     }
 

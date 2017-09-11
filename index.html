@@ -53,13 +53,16 @@
     </ul>
 </nav>
 <main>
-  <h1>{{title}}</h1>
+  <h1 ng-show="!isHome">{{title}}</h1>
    <div ng-bind-html="content"></div>
-   <section ng-if="isTreloloDotCom && isHome" id="transfer-url-to-trelolo">
-     <label for="url-from-trello"><h3>貼上你的 trello 板網址，立刻轉成 trelolo 網站 </h3></label>
-      <input id="url-from-trello" type="text" value="https://trello.com/b/XAL44x7M" ng-model="urlFromTrello" ng-change="doTransUrlToTrelolo()">
+   <section ng-if="isTreloloDotCom && isHome || cardID == 'qjwlxr7W'" id="transfer-url-to-trelolo">
+     <label for="url-from-trello"><h3>貼上你的 Trello 看板網址<br>立刻轉成 Trelolo 網站 </h3></label>
+      <input id="url-from-trello" type="text" placeholder="https://trello.com/b/XAL44x7M" ng-model="urlFromTrello" ng-change="doTransUrlToTrelolo()">
       
-      <input class="url-to-trelolo" ng-model="urlToTrelolo"><button ng-click="doCopyText()">點這裡複製</button>&nbsp;&nbsp;<a href="{{urlToTrelolo}}" target="_blank">或是點此連結前往你的網站</a>
+      <div ng-show="urlFromTrello">
+          <button ng-click="doCopyText()">點這裡複製</button>&nbsp;&nbsp;<a href="{{urlToTrelolo}}" target="_blank">或是點此連結前往你的網站</a>
+          <input class="url-to-trelolo" ng-model="urlToTrelolo">
+      </div>
        
    </section>
     

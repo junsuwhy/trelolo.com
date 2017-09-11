@@ -107,15 +107,10 @@ nav ul ul a
 	padding:10px 15px
 }
 
-nav ul ul ul
-{
-	top:0;
-	left:100%
-}
-
 nav ul li:hover > ul
 {
-	display:block
+	display:block;
+    z-index: 1;
 }
 
 /*
@@ -180,5 +175,5 @@ blockquote cite:before {
     
 }
 .url-to-trelolo{
-    
+    background: #eee;
 }
