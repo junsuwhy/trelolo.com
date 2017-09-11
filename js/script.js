@@ -53,33 +53,39 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         var menu = [];
         var lists = $scope.myData.lists;
         lists.forEach(function(item){
-            var object = {
-                title : item.name,
-                id : item.id,
-                children : [],
+            if(!item.closed){
+                var object = {
+                    title : item.name,
+                    id : item.id,
+                    children : [],
+                }
+                menu.push(object);   
             }
-            menu.push(object);
         });
         
         $scope.menu = menu;
         
-        var cards = $scope.myData.cards.forEach(function(item){
-            parent = getMenuParent($scope, item.idList);
-            if(!item.desc){
-                var url = "#";
-            }else{
-                var reg = RegExp(/^http(s)?:\/\/[^\n]+$/);
-                if(reg.exec(item.desc)){
-                    var url = item.desc
-                }else{
-                    var url = '/?'+$scope.boardID +'/'+item.shortLink;    
+        $scope.myData.cards.forEach(function(item){
+            if(!item.closed){
+                parent = getMenuParent($scope, item.idList);
+                if(parent){
+                    if(!item.desc){
+                        var url = "#";
+                    }else{
+                        var reg = RegExp(/^http(s)?:\/\/[^\n]+$/);
+                        if(reg.exec(item.desc)){
+                            var url = item.desc
+                        }else{
+                            var url = '/?'+$scope.boardID +'/'+item.shortLink;    
+                        }
+                    }
+                    parent.children.push({
+                        title : item.name,
+                        url : url,
+                        shortLink : item.shortLink
+                    });
                 }
             }
-            parent.children.push({
-                title : item.name,
-                url : url,
-                shortLink : item.shortLink
-            });
         });
         
         if(typeof postSetMenu != 'undefined'){
@@ -93,15 +99,10 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         }
         var cards = $scope.myData.cards.forEach(function(item){
             if(item.shortLink == $scope.cardID){
-                console.log(item.desc);
                 $scope.title = item.name;
                 var converter = new showdown.Converter();
                 $scope.content = converter.makeHtml(item.desc);
-                console.log($scope.content);
                 $scope.content = $sce.trustAsHtml($scope.content);
-                console.log($scope.content);
-//                $scope.content = $sce.getTrustedHtml($scope.content);
-//                console.log($scope.content);
             }
         }); 
     };
@@ -119,7 +120,6 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     init();
     
     $scope.changeContent = function changeContent($event){
-        
         var obj = $event.target;
         var href = obj.getAttribute('href');
         if(href == '#'){
