@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Trelolo.com</title>
+	<link rel="stylesheet" href="css/skeleton.css">
 	<link rel="stylesheet" href="css/style.css">
     <script src="https://code.angularjs.org/snapshot/angular.js"></script>
     <script src="https://code.angularjs.org/snapshot/angular-sanitize.js"></script>
@@ -28,12 +29,17 @@
 
 
 <header>
-    <h1>{{title}} | {{myData.name}}</h1>
+    <h1><a href="/?{{boardID}}">{{title}} | {{myData.name}}</a></h1>
 </header>
 <nav>
     <ul>
         <li ng-repeat="item in menu">
-            <a href="{{item.children[0].url}}" ng-click="changeContent($event)">{{item.children[0].title}}</a>
+            <span ng-if="item.children[0].url=='#'">
+            {{item.children[0].title}}
+            </span>
+            <a href="{{item.children[0].url}}" ng-click="changeContent($event)" ng-if="item.children[0].url!='#'">
+            {{item.children[0].title}}
+            </a>
             <ul>
                 <li ng-repeat="child in item.children" ng-if="$index > 0">
                     <a href="{{child.url}}" ng-click="changeContent($event)">{{child.title}}</a>
@@ -42,12 +48,12 @@
         </li>
     </ul>
 </nav>
-<content>
+<main>
    <div ng-bind-html="content"></div>
     
-</content>
+</main>
 <footer>
-    這是 {{title}} 
+    copyright © 2017 trelolo.com
 </footer>
 
 

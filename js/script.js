@@ -58,10 +58,15 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         
         var cards = $scope.myData.cards.forEach(function(item){
             parent = getMenuParent($scope, item.idList);
+            if(!item.desc){
+                var url = "#";
+            }else{
+                var url = '/?'+$scope.boardID +'/'+item.shortLink;
+            }
             parent.children.push({
                 title : item.name,
-                url : '/index.html?'+$scope.boardID +'/'+item.shortLink,
-                shortLink : item.shorLink
+                url : url,
+                shortLink : item.shortLink
             });
         });
         
@@ -98,10 +103,15 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     init();
     
     $scope.changeContent = function changeContent($event){
-        $event.preventDefault();
+        
         var obj = $event.target;
-        $scope.cardID = obj.getAttribute('href').match(/\?(.+)\/(.+)/)[2];
-        setContent($scope);
-//        $event.preventEvent();
+        var href = obj.getAttribute('href');
+        if(href == '#'){
+            return
+        }else{
+            $scope.cardID = href.match(/\?(.+)\/(.+)/)[2];
+            $event.preventDefault();
+            setContent($scope);
+        }
     }
 }]);
