@@ -11,10 +11,21 @@ body>*{
     margin: 0 auto;
 }
 header {
+    background-position-y:33%; 
     padding: 20px 0 0 0;
+    width: 100vw;
+    height: calc(100vh/2);
+/*    position:relative;*/
+}
+header h1{
+/*    position:absolute;*/
+    text-align: center;
+    display: block;
+    margin-top: 17vh;
+/*    left: calc(100vw/2);*/
 }
 header a {
-    color: black;
+    color: white;
     text-decoration: none;
 }
 footer{

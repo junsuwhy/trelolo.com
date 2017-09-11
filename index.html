@@ -28,8 +28,8 @@
 <body  ng-controller="MgCtrl as ctl">
 
 
-<header>
-    <h1><a href="/?{{boardID}}">{{title}} | {{myData.name}}</a></h1>
+<header style="background-image: url({{bgImage}});-webkit-background-size: cover;">
+    <h1><a href="/?{{boardID}}">{{myData.name}}</a></h1>
 </header>
 <nav>
     <ul>
@@ -37,18 +37,23 @@
             <span ng-if="item.children[0].url=='#'">
             {{item.children[0].title}}
             </span>
-            <a href="{{item.children[0].url}}" ng-click="changeContent($event)" ng-if="item.children[0].url!='#'">
+            <a href="{{item.children[0].url}}" ng-click="changeContent($event)" ng-if="item.children[0].url!='#' && item.children[0].url.substr(0,4) != 'http'">
+            {{item.children[0].title}}
+            </a>
+            <a href="{{item.children[0].url}}" target="_blank" ng-if="item.children[0].url!='#' && item.children[0].url.substr(0,4) == 'http'">
             {{item.children[0].title}}
             </a>
             <ul>
                 <li ng-repeat="child in item.children" ng-if="$index > 0">
-                    <a href="{{child.url}}" ng-click="changeContent($event)">{{child.title}}</a>
+                    <a href="{{child.url}}" ng-click="changeContent($event)" ng-if="child.url.substr(0,4) != 'http'">{{child.title}}</a>
+                    <a href="{{child.url}}" target="_blank" ng-if="child.url.substr(0,4) == 'http'">{{child.title}}</a>
                 </li>
             </ul>
         </li>
     </ul>
 </nav>
 <main>
+  <h1>{{title}}</h1>
    <div ng-bind-html="content"></div>
     
 </main>

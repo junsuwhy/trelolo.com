@@ -1,4 +1,7 @@
 showdown.setOption('simplifiedAutoLink',true);
+showdown.setOption('openLinksInNewWindow',true);
+showdown.setOption('simpleLineBreaks',true);
+showdown.setOption('headerLevelStart',2);
 
 var app = angular.module("page", ['ngSanitize']).config(function($sceDelegateProvider) {  
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -19,6 +22,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                 console.log(response.data);
                 $scope.myData = response.data;
                 console.log($scope.myData);
+                setHeader($scope);
                 setMenu($scope);
                 setContent($scope);
             });        
@@ -42,6 +46,10 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         }
     }
     
+    setHeader = function($scope){
+        $scope.bgImage = $scope.myData.prefs.backgroundImage;
+    }
+    
     setMenu = function($scope){
         var menu = [];
         var lists = $scope.myData.lists;
@@ -61,7 +69,12 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             if(!item.desc){
                 var url = "#";
             }else{
-                var url = '/?'+$scope.boardID +'/'+item.shortLink;
+                var reg = RegExp(/^http(s)?:\/\/[^\n]+$/);
+                if(reg.exec(item.desc)){
+                    var url = item.desc
+                }else{
+                    var url = '/?'+$scope.boardID +'/'+item.shortLink;    
+                }
             }
             parent.children.push({
                 title : item.name,
