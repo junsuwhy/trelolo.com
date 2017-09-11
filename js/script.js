@@ -2,6 +2,7 @@ showdown.setOption('simplifiedAutoLink',true);
 showdown.setOption('openLinksInNewWindow',true);
 showdown.setOption('simpleLineBreaks',true);
 showdown.setOption('headerLevelStart',2);
+showdown.setOption('tables',true);
 
 var app = angular.module("page", ['ngSanitize']).config(function($sceDelegateProvider) {  
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -19,9 +20,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         
         $http.get(jsonUrl)
             .then(function(response){
-                console.log(response.data);
                 $scope.myData = response.data;
-                console.log($scope.myData);
                 setHeader($scope);
                 setMenu($scope);
                 setContent($scope);
@@ -94,11 +93,15 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         }
         var cards = $scope.myData.cards.forEach(function(item){
             if(item.shortLink == $scope.cardID){
+                console.log(item.desc);
                 $scope.title = item.name;
                 var converter = new showdown.Converter();
                 $scope.content = converter.makeHtml(item.desc);
-                $sce.trustAsHtml($scope.content);
-                $scope.content = $sce.getTrustedHtml($scope.content);
+                console.log($scope.content);
+                $scope.content = $sce.trustAsHtml($scope.content);
+                console.log($scope.content);
+//                $scope.content = $sce.getTrustedHtml($scope.content);
+//                console.log($scope.content);
             }
         }); 
     };
