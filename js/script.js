@@ -39,7 +39,18 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     }
     
     setHeader = function($scope){
-        $scope.bgImage = $scope.myData.prefs.backgroundImage;
+        if($scope.myData.prefs.backgroundImage){
+            if(window.outerWidth > 960){
+                $scope.bgImage = $scope.myData.prefs.backgroundImage;
+            }else{
+                var backgroundImageScaled = $scope.myData.prefs.backgroundImageScaled;
+                for(var i=0;i< backgroundImageScaled.length;i++){
+                    $scope.bgImage = backgroundImageScaled[i].url;
+                    if(backgroundImageScaled[i].width > window.innerWidth)break;
+                }
+            }
+        }
+        
     }
     
     setMenu = function($scope){
