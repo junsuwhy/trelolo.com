@@ -7,32 +7,7 @@ body{
     margin: 0;
 }
 
-/** 
-  RWD Begin
-*/
-
-@media only screen and (max-width: 767px) {
-    body>* {
-        width: 100%;
-    }
-    main {
-        padding: 0 20px;
-    }
-}
-
-
-@media only screen and (min-width: 768px) {
-    body>*{
-        width: 720px;
-        margin: 0 auto;
-    }
-}
-
-/**
-  RWD End
-*/
-
-header {
+body>header {
     background-position-y:33%; 
     padding: 20px 0 0 0;
     width: 100%;
@@ -50,7 +25,7 @@ header a {
     color: white;
     text-decoration: none;
 }
-footer{
+body>footer{
     background: #000;
     width: 100%;
     color: white;
@@ -181,7 +156,7 @@ nav ul li:hover > ul
   main
 */
 
-main {
+body>main {
     margin: 60px auto 0;
 }
 
@@ -225,3 +200,35 @@ blockquote cite:before {
     content: "\2014 \2009";
 }
 
+
+
+/** 
+  RWD Begin
+*/
+
+@media only screen and (max-width: 767px) {
+    body>* {
+        width: 100%;
+    }
+    main {
+        padding: 0 20px;
+    }
+    main>p{
+        width: calc(100% - 40px);
+    }
+    main img{
+        max-width: calc(100% - 40px);
+    }
+}
+
+
+@media only screen and (min-width: 768px) {
+    body>*{
+        width: 720px;
+        margin: 0 auto;
+    }
+}
+
+/**
+  RWD End
+*/
