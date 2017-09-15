@@ -6,14 +6,36 @@ body{
     padding: 0;
     margin: 0;
 }
-body>*{
-    width: 720px;
-    margin: 0 auto;
+
+/** 
+  RWD Begin
+*/
+
+@media only screen and (max-width: 767px) {
+    body>* {
+        width: 100%;
+    }
+    main {
+        padding: 0 20px;
+    }
 }
+
+
+@media only screen and (min-width: 768px) {
+    body>*{
+        width: 720px;
+        margin: 0 auto;
+    }
+}
+
+/**
+  RWD End
+*/
+
 header {
     background-position-y:33%; 
     padding: 20px 0 0 0;
-    width: 100vw;
+    width: 100%;
     height: calc(100vh/2);
 /*    position:relative;*/
 }
@@ -42,17 +64,29 @@ inspired by https://codepen.io/philhoyt/pen/ujHzd
 
 nav
 {
-	margin-top:15px;
+    line-height: 0;
+    position: relative;
     display: block;
+}
+nav::before {
+    height: 100%;
+    z-index: -1;
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 100vw;
+    top: 0;
+    left: calc((100% - 100vw) /2);
+    background-color: #f6f6f6;
 }
 
 nav ul
 {
-	list-style:none;
-	position:relative;
+	list-style: none;
+	position: relative;
 	display: inline-block;
-	margin:0;
-	padding:0
+	margin: 0;
+	padding: 0;
 }
 
 nav ul a,
@@ -72,7 +106,7 @@ nav ul li
 	position:relative;
 	float:left;
 	margin:0;
-	padding:0
+	padding:15px 0;
 }
 
 nav ul li.current-menu-item
@@ -82,7 +116,7 @@ nav ul li.current-menu-item
 
 nav ul li:hover
 {
-	background:#f6f6f6
+	background:#cccccc
 }
 
 nav ul ul
@@ -91,14 +125,14 @@ nav ul ul
 	position:absolute;
 	top:100%;
 	left:0;
-	background:#fff;
+	background:#f6f6f6;
 	padding:0
 }
 
 nav ul ul li
 {
 	float:none;
-	width:200px
+	width:250px
 }
 
 nav ul ul a
@@ -111,6 +145,48 @@ nav ul li:hover > ul
 {
 	display:block;
     z-index: 1;
+}
+
+#transfer-url-to-trelolo {
+    position: relative;
+/*    background: #eee;*/
+    text-align: center;
+    padding: 40px 0;
+}
+#transfer-url-to-trelolo::before{
+    background: #eee;
+    width: 100vw;
+    height: 100%;
+    content: " ";
+    display:block;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: calc((100% - 100vw)/2);
+}
+
+#transfer-url-to-trelolo input{
+    text-align: center;
+    display: block;
+    width: 50%;
+    margin: 0 auto 10px;
+    
+}
+.url-to-trelolo{
+    background: #eee;
+}
+
+
+/**
+  main
+*/
+
+main {
+    margin: 60px auto 0;
+}
+
+main img{
+    max-width: 100%;
 }
 
 /*
@@ -149,31 +225,3 @@ blockquote cite:before {
     content: "\2014 \2009";
 }
 
-#transfer-url-to-trelolo {
-    position: relative;
-/*    background: #eee;*/
-    text-align: center;
-    padding: 40px 0;
-}
-#transfer-url-to-trelolo::before{
-    background: #eee;
-    width: 100vw;
-    height: 100%;
-    content: " ";
-    display:block;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: calc((100% - 100vw)/2);
-}
-
-#transfer-url-to-trelolo input{
-    text-align: center;
-    display: block;
-    width: 50%;
-    margin: 0 auto 10px;
-    
-}
-.url-to-trelolo{
-    background: #eee;
-}
