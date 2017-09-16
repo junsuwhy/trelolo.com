@@ -116,7 +116,8 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                 $scope.content = converter.makeHtml(item.desc);
                 $scope.content = $sce.trustAsHtml($scope.content);
             }
-        }); 
+        });
+        document.title = $scope.title + ' | ' + $scope.myData.name;
     };
     
     getMenuParent = function($scope, menuID){

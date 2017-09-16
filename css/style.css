@@ -1,12 +1,15 @@
 @import url(//fonts.googleapis.com/earlyaccess/cwtexhei.css);
 *{
     font-family: 'cwTeXHei', sans-serif;
+    box-sizing: border-box;
 }
 body{
     padding: 0;
     margin: 0;
 }
-
+::-webkit-scrollbar {
+    display: none;
+}
 body>header {
     background-position-y:33%; 
     padding: 20px 0 0 0;
@@ -171,7 +174,6 @@ blockquote {
     font-family: Georgia, serif;
     font-size: 18px;
     font-style: italic;
-    width: 500px;
     margin: 0.25em 0;
     padding: 0.25em 40px;
     line-height: 1.45;
