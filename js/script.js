@@ -179,14 +179,12 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         }else{
             history.pushState(null,'',href);
             doRouter($scope);
-//            $scope.cardID = href.match(/\?(.+)\/(.+)/)[2];
-//            setContent($scope);
             $event.preventDefault();
         }
     }
 
     $scope.doTransUrlToTrelolo = function(){
-        var reg = RegExp(/^https:\/\/trello\.com\/b\/([^\/]+)/);
+        var reg = RegExp(/^https:\/\/trello\.com\/([bc]\/[^\/]+)/);
         var regResult = reg.exec(this.urlFromTrello);
         if(regResult){
             this.urlToTrelolo = 'http://trelolo.com/?'+regResult[1];

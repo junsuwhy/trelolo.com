@@ -29,7 +29,7 @@
 
 
 <header style="background-image: url({{bgImage}});-webkit-background-size: cover;">
-    <h1><a href="/?{{boardID}}">{{myData.name}}</a></h1>
+    <h1><a href="/?b/{{boardID}}">{{myData.name}}</a></h1>
 </header>
 <nav>
     <ul>
@@ -45,7 +45,10 @@
             </a>
             <ul>
                 <li ng-repeat="child in parent.children">
-                    <a href="{{child.url}}" ng-click="changeContent($event)" ng-if="child.url.substr(0,4) != 'http'">{{child.title}}</a>
+                    <span ng-if="child.url=='#'">
+                        {{child.title}}
+                    </span>
+                    <a href="{{child.url}}" ng-click="changeContent($event)" ng-if="child.url != '#' && child.url.substr(0,4) != 'http'">{{child.title}}</a>
                     <a href="{{child.url}}" target="_blank" ng-if="child.url.substr(0,4) == 'http'">{{child.title}}</a>
                 </li>
             </ul>
