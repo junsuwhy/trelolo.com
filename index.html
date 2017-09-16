@@ -33,18 +33,18 @@
 </header>
 <nav>
     <ul>
-        <li ng-repeat="item in menu">
-            <span ng-if="item.children[0].url=='#'">
-            {{item.title}}
+        <li ng-repeat="parent in menu">
+            <span ng-if="parent.url=='#'">
+                {{parent.title}}
             </span>
-            <a href="{{item.children[0].url}}" ng-click="changeContent($event)" ng-if="item.children[0].url!='#' && item.children[0].url.substr(0,4) != 'http'">
-            {{item.title}}
+            <a href="{{parent.url}}" ng-click="changeContent($event)" ng-if="parent.url!='#' && parent.url.substr(0,4) != 'http'">
+            {{parent.title}}
             </a>
-            <a href="{{item.children[0].url}}" target="_blank" ng-if="item.children[0].url!='#' && item.children[0].url.substr(0,4) == 'http'">
-            {{item.title}}
+            <a href="{{parent.url}}" target="_blank" ng-if="parent.url!='#' && parent.url.substr(0,4) == 'http'">
+            {{parent.title}}
             </a>
             <ul>
-                <li ng-repeat="child in item.children" ng-if="$index > 0">
+                <li ng-repeat="child in parent.children">
                     <a href="{{child.url}}" ng-click="changeContent($event)" ng-if="child.url.substr(0,4) != 'http'">{{child.title}}</a>
                     <a href="{{child.url}}" target="_blank" ng-if="child.url.substr(0,4) == 'http'">{{child.title}}</a>
                 </li>
