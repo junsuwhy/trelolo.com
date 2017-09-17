@@ -28,8 +28,8 @@
 <body  ng-controller="MgCtrl as ctl">
 
 
-<header style="background-image: url({{bgImage}});-webkit-background-size: cover;">
-    <h1><a href="/?b/{{boardID}}">{{myData.name}}</a></h1>
+<header style="background-image: url({{bgImage}});-webkit-background-size: cover;background-color: {{bgColor}};">
+    <h1><a style="color: {{bgTextColor}};" href="/?b/{{boardID}}">{{myData.name}}</a></h1>
 </header>
 <nav>
     <ul>

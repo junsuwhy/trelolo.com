@@ -64,6 +64,13 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                     if(backgroundImageScaled[i].width > window.innerWidth)break;
                 }
             }
+        }else{
+            $scope.bgColor = $scope.myData.prefs.backgroundColor;
+        }
+        if($scope.myData.prefs.backgroundBrightness == 'dark'){
+            $scope.bgTextColor = 'white';
+        }else{
+            $scope.bgTextColor = 'black';
         }
         
     }
