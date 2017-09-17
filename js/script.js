@@ -3,6 +3,10 @@ showdown.setOption('openLinksInNewWindow',true);
 showdown.setOption('simpleLineBreaks',true);
 showdown.setOption('headerLevelStart',2);
 showdown.setOption('tables',true);
+showdown.setOption('parseImgDimensions',true);
+showdown.setOption('disableForced4SpacesIndentedSublists',true);
+
+
 
 var treloloBoardID = 'XAL44x7M';
 
