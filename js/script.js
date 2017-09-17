@@ -149,6 +149,8 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             }
         });
         document.title = $scope.title + ' | ' + $scope.myData.name;
+        ga('set', 'page', location.search);
+        ga('send', 'pageview');
     };
     
     getMenuParent = function($scope, menuID){
@@ -199,6 +201,12 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         var regResult = reg.exec(this.urlFromTrello);
         if(regResult){
             this.urlToTrelolo = 'http://trelolo.com/?'+regResult[1];
+            ga('send','event','generator','success',this.urlToTrelolo);
+        }else{
+            var reg_2 = RegExp(/trello\.com/);
+            if(reg_2.exec(this.urlFromTrello)){
+                ga('send','event','generator','failed',this.urlToTrelolo);      
+            }
         }
     }
 
