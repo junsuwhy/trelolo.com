@@ -9,7 +9,7 @@ showdown.setOption('disableForced4SpacesIndentedSublists',true);
 
 
 var treloloBoardID = 'XAL44x7M';
-
+        
 var app = angular.module("page", ['ngSanitize']).config(function($sceDelegateProvider) {  
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
@@ -24,33 +24,32 @@ var app = angular.module("page", ['ngSanitize']).config(function($sceDelegatePro
 app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     
     doRouter = function($scope){
-        if(!location.search || location.search.match(treloloBoardID)){
-            search = '?b/XAL44x7M';
-            $scope.isTreloloDotCom = true;
-        }else{
-            search = location.search;
-        }
-        var reg = RegExp(/^\?([bc]+)\/([^\/]+)(?:\/([^\/]+))?/);
-        var router = reg.exec(search);
-        if(router){
-            if(router[1] == 'b'){
-                $scope.boardID = router[2];
-                $scope.isHome = true;
-                if( !$scope.myData ){
-                    $scope.jsonUrl ='https://trello.com/b/'+$scope.boardID+'.json';
-                    doUpdateFromBoardJson();
-                    return;
-                }
-            }else if(router[1] == 'c'){
-                $scope.cardID = router[2];
-                if( !$scope.myData ){
-                    $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
-                    doUpdateFromCardJson();
-                    return;
-                }
+        if(typeof window.cardID != 'undefined'){
+            $scope.cardID = cardID;
+            if( !$scope.myData ){
+                $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
+                doUpdateFromCardJson();
+                return;
             }
+            // setContent($scope);
         }
-        setContent($scope);
+        else if(typeof window.boardID != 'undefined'){
+            $scope.boardID = boardID;
+        }else{
+            $scope.boardID = treloloBoardID;
+        }
+        if( !$scope.myData ){
+            $scope.jsonUrl ='https://trello.com/b/'+$scope.boardID+'.json';
+            doUpdateFromBoardJson();
+            return;
+        }
+
+            // if( !$scope.myData ){
+            //     $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
+            //     doUpdateFromCardJson();
+            //     return;
+            // }
+            // setContent($scope);
     }
     
     setHeader = function($scope){
@@ -105,7 +104,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                         if(reg.exec(item.desc)){
                             var url = item.desc;
                         }else{
-                            var url = '/?c/'+item.shortLink;    
+                            var url = '/c/'+item.shortLink;    
                         }
                     }
                     if(parent.children.length == 0){
@@ -191,8 +190,13 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             return
         }else{
             history.pushState(null,'',href);
-            doRouter($scope);
+            var reg = RegExp(/^\/([bc]+)\/([^\/]+)(?:\/([^\/]+))?/);
             $event.preventDefault();
+            if(reg.exec(href)){
+                $scope.cardID = reg.exec(href)[2];
+                setContent($scope);
+                $event.preventDefault();
+            }
         }
     }
 
@@ -200,7 +204,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         var reg = RegExp(/^https:\/\/trello\.com\/([bc]\/[^\/]+)/);
         var regResult = reg.exec(this.urlFromTrello);
         if(regResult){
-            this.urlToTrelolo = 'http://trelolo.com/?'+regResult[1];
+            this.urlToTrelolo = 'http://trelolo.com/'+regResult[1];
             ga('send','event','generator','success',this.urlToTrelolo);
         }else{
             var reg_2 = RegExp(/trello\.com/);
