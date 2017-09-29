@@ -14,7 +14,7 @@ body>header {
     background-position-y:33%; 
     padding: 20px 0 0 0;
     width: 100%;
-    height: calc(100vh/2);
+    height: 50vh;
 /*    position:relative;*/
 }
 header h1{

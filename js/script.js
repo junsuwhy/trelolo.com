@@ -38,6 +38,10 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         }else{
             $scope.boardID = treloloBoardID;
         }
+        if($scope.boardID == treloloBoardID){
+            $scope.isTreloloDotCom = true;
+        }
+
         if( !$scope.myData ){
             $scope.jsonUrl ='https://trello.com/b/'+$scope.boardID+'.json';
             doUpdateFromBoardJson();
@@ -182,6 +186,19 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             setContent($scope);
         });
     }
+
+    doPostProcess = function($scope){
+
+        // part inspired by https://stackoverflow.com/questions/15939913/single-page-application-load-js-file-dynamically-based-on-partial-view
+        var body = document.getElementsByTagName('body')[];
+        $scope.scripts.forEach(function(path){
+            script = document.createElement('script');
+            script.setAttribute('src', path);
+            script.setAttribute('type', 'text/javascript');
+            script.setAttribute('charset', 'utf-8');
+            body.appendChild(script);
+        })
+    }
     
     $scope.changeContent = function changeContent($event){
         var obj = $event.target;
@@ -231,7 +248,22 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         doRouter($scope);
         doUpdateFromBoardJson();
         $scope.doTransUrlToTrelolo();
+        // doPostProcess($scope);
     }
 
     init();
 }]);
+
+// https://codepen.io/MicoTheArtist/pen/gbDlj
+// https://stackoverflow.com/questions/30689040/angular-scroll-directive
+// https://stackoverflow.com/questions/26588300/scroll-event-in-angularjs
+app.directive("scroll", function ($window) {
+    return function(scope, element, attrs) {
+      scope.header_bg_top = -20/3;
+      
+        angular.element($window).bind("scroll", function() {
+            scope.header_bg_top = (this.pageYOffset-20)/3;
+            scope.$apply();
+        });
+    };
+});

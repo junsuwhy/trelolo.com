@@ -4,67 +4,84 @@
 // ini_set('display_errors', TRUE);
 // ini_set('display_startup_errors', TRUE);
 
-
-global $page;
+global $page, $boardID, $cardID, $data, $apikey;
 $page = new stdClass();
+
+include_once('apikey.php');
 
 main();
 
 
 function main(){
-    doRouter();
+  global $data;
+  $q = doRouter();
+  $data = getJsonData($q);
+  setPageVariables($data);
 }
 
 
 function doRouter(){
   global $page;
-  // print_r($_GET);
-  $q = $_GET['q'];
+  if(!empty($_GET)){
+    foreach ($_GET as $key => $value) {
+      if($key == 'q'){
+        $q = $value;
+      }elseif(preg_match('/^([bc])\/([^\/]+)/',$key)){
+        $q = '/'.$key;
+      }
+    }
+  }else{
+    $q = 'b/XAL44x7M';
+  }
+  
   if(preg_match('/^\/([bc])\/([^\/]+)/',$q,$match_arr)){
     if($match_arr[1] == 'b'){
       global $boardID;
       $boardID = $match_arr[2];
-      // $url = "https://trello.com/b/$boardID.json?key=83beeb78133c736dc20c54e319b7564b";
-      // print($url."\n");
-      // $json = file_get_contents($url);
-      // print($json);
-      // exit;
-      // print($json."\n");
-      // $data = json_decode($json);
-      // $page->data = $data;
-      // $json2 = get_data($url);
-      // print($json2."\n");
-      // exit;
-
     }
     if($match_arr[1] == 'c'){
       global $cardID;
       $cardID = $match_arr[2];
-
-    }
-    
+    } 
   }
-  // print_r($page);
+  return $q;
+}
+
+function getJsonData($path){
+  global $apikey;
+  $url = "https://trello.com/{$path}.json?key={$apikey}";
+  $json = file_get_contents($url);
+  
+  $data = json_decode($json);
+  return $data;
+}
+
+function setPageVariables($data){
+  global $page;
+  $page->title = $data->name;
+  if($data->pref->backgroundImage){
+    $page->og_image = $data->pref->backgroundImage;
+  }
 }
 
 ?>
 
 
 <!doctype html>
-<html lang="zh-hant"  ng-app="page">
+<html lang="zh-hant"  ng-app="page" scroll>
 <head>
 	<meta charset="UTF-8">
-	<title>Trelolo.com</title>
+	<title><?php echo $page->title; ?></title>
 	<link rel="stylesheet" href="/css/skeleton.css">
 	<link rel="stylesheet" href="/css/style.css">
-    <script src="https://code.angularjs.org/snapshot/angular.js"></script>
-    <script src="https://code.angularjs.org/snapshot/angular-sanitize.js"></script>
+    <script src="https://code.angularjs.org/snapshot/angular.min.js"></script>
+    <script src="https://code.angularjs.org/snapshot/angular-sanitize.min.js"></script>
     <script src="https://cdn.rawgit.com/showdownjs/showdown/develop/dist/showdown.min.js"></script>
 	<meta property="og:url" content="https://trelolo.com" />
 <!--    <meta property="og:type"               content="article" />-->
-    <meta property="og:title" content="Trelolo.com" />
-    <meta property="og:description" content="Trelolo 是一個把你的 Trello 公開板轉成網站的服務" />
-    <meta property="og:image"  content="" />
+    <meta property="og:title" content="<?php echo $page->title; ?>" />
+    <meta property="og:description" content="<?php echo $page->title; ?>" />
+    <meta property="og:image"  content="<?php echo $page->og_image; ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -90,7 +107,7 @@ function doRouter(){
 <body  ng-controller="MgCtrl as ctl">
 
 
-<header style="background-image: url({{bgImage}});-webkit-background-size: cover;background-color: {{bgColor}};">
+<header style="background-image: url({{bgImage}});-webkit-background-size: cover;background-color: {{bgColor}};background-position-y: {{header_bg_top}}px;">
     <h1><a style="color: {{bgTextColor}};" href="/b/{{boardID}}">{{myData.name}}</a></h1>
 </header>
 <nav>
@@ -138,6 +155,8 @@ function doRouter(){
 
 
 <script src="/js/script.js"></script>
+
+
 
 </body>
 </html>
