@@ -76,6 +76,22 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             $scope.bgTextColor = 'black';
         }
         
+        // Dynamic add script, style files to variable. Add to page on doAddSourceDynamicly function.
+        $scope.scripts = [];
+        $scope.styles = [];
+        if($scope.myData.cards.length > 0){
+            $scope.myData.cards[0].attachments.forEach(function(file){
+                regjs = RegExp(/\.js\??/);
+                regcss = RegExp(/\.css\??/);
+                if(regjs.exec(file.url)){
+                    $scope.scripts.push(file.url);
+                }
+                if(regcss.exec(file.url)){
+                    $scope.styles.push(file.url);
+                }
+            })
+        }
+        doAddSourceDynamicly($scope);
     }
     
     setMenu = function($scope){
@@ -187,17 +203,30 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         });
     }
 
-    doPostProcess = function($scope){
+    doAddSourceDynamicly = function($scope){
 
         // part inspired by https://stackoverflow.com/questions/15939913/single-page-application-load-js-file-dynamically-based-on-partial-view
-        var body = document.getElementsByTagName('body')[];
-        $scope.scripts.forEach(function(path){
-            script = document.createElement('script');
-            script.setAttribute('src', path);
-            script.setAttribute('type', 'text/javascript');
-            script.setAttribute('charset', 'utf-8');
-            body.appendChild(script);
-        })
+        if($scope.scripts.length > 0){
+            var head = document.getElementsByTagName('head')[0];
+            $scope.scripts.forEach(function(path){
+                script = document.createElement('script');
+                script.setAttribute('src', path);
+                script.setAttribute('type', 'text/javascript');
+                script.setAttribute('charset', 'utf-8');
+                head.appendChild(script);
+            });
+        }
+
+        if($scope.styles.length > 0){
+            var head = document.getElementsByTagName('head')[0];
+            $scope.styles.forEach(function(path){
+                var link = document.createElement('link');
+                link.setAttribute('rel', 'stylesheet');
+                link.setAttribute('type', 'text/css');
+                link.setAttribute('href', path);
+                head.appendChild(link);
+            });
+        }
     }
     
     $scope.changeContent = function changeContent($event){
@@ -248,7 +277,6 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         doRouter($scope);
         doUpdateFromBoardJson();
         $scope.doTransUrlToTrelolo();
-        // doPostProcess($scope);
     }
 
     init();
