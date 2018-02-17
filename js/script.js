@@ -127,7 +127,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                             var url = '/c/'+item.shortLink;    
                         }
                     }
-                    if(parent.children.length == 0){
+                    if(parent.children.length == 0 && !parent.url){
                         if(parent.title == item.name){
                             parent.url = url;
                         }else{

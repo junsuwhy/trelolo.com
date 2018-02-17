@@ -3,11 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Trelolo.com</title>
-	<link rel="stylesheet" href="css/skeleton.css">
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="/css/skeleton.css">
+	<link rel="stylesheet" href="/css/style.css">
     <script src="https://code.angularjs.org/snapshot/angular.js"></script>
     <script src="https://code.angularjs.org/snapshot/angular-sanitize.js"></script>
     <script src="https://cdn.rawgit.com/showdownjs/showdown/develop/dist/showdown.min.js"></script>
+  <meta name="description" content="Trelolo 是一個把你的 Trello 公開板轉成網站的服務">
 	<meta property="og:url" content="https://trelolo.com" />
 <!--    <meta property="og:type"               content="article" />-->
     <meta property="og:title" content="Trelolo.com" />
@@ -27,7 +28,7 @@
 <body  ng-controller="MgCtrl as ctl">
 
 
-<header style="background-image: url({{bgImage}});-webkit-background-size: cover;background-color: {{bgColor}};">
+<header style="background-image: url({{bgImage}});-webkit-background-size: cover;background-color: {{bgColor}};background-position-y: {{header_bg_top}}px;">
     <h1><a style="color: {{bgTextColor}};" href="/?b/{{boardID}}">{{myData.name}}</a></h1>
 </header>
 <nav>
@@ -74,7 +75,7 @@
 </footer>
 
 
-<script src="js/script.js"></script>
+<script src="/js/script.js"></script>
 
 </body>
 </html>
