@@ -288,17 +288,22 @@ label > .label-body {
 /* Lists
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 ul {
-  list-style: circle inside; }
+  list-style:disc; 
+  margin: 8px 8px 8px 24px;
+}
 ol {
-  list-style: decimal inside; }
+  list-style: decimal; }
 ol, ul {
-  padding-left: 0;
+  padding-left: 20px;
   margin-top: 0; }
+ul ul{
+  list-style: circle;
+}
 ul ul,
 ul ol,
 ol ol,
 ol ul {
-  margin: 1.5rem 0 1.5rem 3rem;
+  margin: 1.5rem 0 1.5rem 0rem;
   font-size: 90%; }
 li {
   margin-bottom: 1rem; }
