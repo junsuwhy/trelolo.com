@@ -10,7 +10,8 @@ showdown.setOption('disableForced4SpacesIndentedSublists',true);
 
 var treloloBoardID = 'XAL44x7M';
         
-var app = angular.module("page", ['ngSanitize']).config(function($sceDelegateProvider) {  
+/** Sidebar refs : https://github.com/SidebarJS/angular-sidebarjs */
+var app = angular.module("page", ['ngSanitize','ngSidebarJS']).config(function($sceDelegateProvider) {  
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
         'self',
@@ -244,6 +245,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                 $event.preventDefault();
             }
         }
+        $scope.$$childHead.$ctrl.SidebarJS.close();
     }
 
     $scope.doTransUrlToTrelolo = function(){

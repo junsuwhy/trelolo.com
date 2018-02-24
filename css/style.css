@@ -56,13 +56,13 @@ body>footer{
 inspired by https://codepen.io/philhoyt/pen/ujHzd
 */
 
-nav
+body>nav
 {
     line-height: 0;
     position: relative;
     display: block;
 }
-nav::before {
+body>nav::before {
     height: 100%;
     z-index: -1;
     content: " ";
@@ -74,7 +74,7 @@ nav::before {
     background-color: #f6f6f6;
 }
 
-nav ul
+body>nav ul
 {
 	list-style: none;
 	position: relative;
@@ -83,8 +83,8 @@ nav ul
 	padding: 0;
 }
 
-nav ul a,
-nav ul span
+body>nav ul a,
+body>nav ul span
 {
 	display:block;
 	color:#333;
@@ -95,7 +95,7 @@ nav ul span
 	padding:0 15px;
 }
 
-nav ul li
+body>nav ul li
 {
 	position:relative;
 	float:left;
@@ -103,17 +103,17 @@ nav ul li
 	padding:15px 0;
 }
 
-nav ul li.current-menu-item
+body>nav ul li.current-menu-item
 {
 	background:#ddd
 }
 
-nav ul li:hover
+body>nav ul li:hover
 {
 	background:#cccccc
 }
 
-nav ul ul
+body>nav ul ul
 {
 	display:none;
 	position:absolute;
@@ -123,19 +123,19 @@ nav ul ul
 	padding:0
 }
 
-nav ul ul li
+body>nav ul ul li
 {
 	float:none;
 	width:250px
 }
 
-nav ul ul a
+body>nav ul ul a
 {
 	line-height:120%;
 	padding:10px 15px
 }
 
-nav ul li:hover > ul
+body>nav ul li:hover > ul
 {
 	display:block;
     z-index: 1;
@@ -218,6 +218,46 @@ blockquote cite:before {
     content: "\2014 \2009";
 }
 
+/** RWD mobile menu */
+
+.hamburger {
+    position: absolute;
+    top: 26px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+
+
+.hamburger>div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 4px;
+  background: #FCFCFC;
+}
+
+.hamburger>div:before {
+  top: -12px;
+}
+
+.hamburger>div:after {
+  top: 12px;
+}
+
+.hamburger>div:before,
+.hamburger>div:after {
+  content: '';
+  position:absolute;
+  width: 32px;
+  height: 4px;
+  background:#FCFCFC;
+  right: 0;
+}
+
 
 
 /** 
@@ -237,6 +277,9 @@ blockquote cite:before {
     main img{
         max-width: calc(100% - 40px);
     }
+    body>nav{
+        display: none;
+    }
 }
 
 
@@ -244,6 +287,9 @@ blockquote cite:before {
     body>*{
         width: 720px;
         margin: 0 auto;
+    }
+    .hamburger {
+        display: none;
     }
 }
 
