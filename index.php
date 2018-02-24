@@ -9,7 +9,7 @@ main();
 
 
 function main(){
-  global $data, $page;
+  global $data, $page, $boardID, $cardID;
   $page->url = doRouter();
   $data = getJsonData($page->url);
   setPageVariables($data);
@@ -25,6 +25,12 @@ function main(){
   );
   foreach ($replace as $key => $value) {
     $html = str_replace($key, $value, $html);
+  }
+  if($boardID){
+    $html = str_replace('window.boardID = undefined;',  'window.boardID = "'.$boardID.'";', $html);
+  }
+  if($cardID){
+    $html = str_replace('window.cardID = undefined;',  'window.cardID = "'.$cardID.'";', $html);
   }
   print($html);
 }
