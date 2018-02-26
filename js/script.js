@@ -169,7 +169,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             }
         });
         document.title = $scope.title + ' | ' + $scope.myData.name;
-        ga('set', 'page', location.search);
+        ga('set', 'page', location.pathname);
         ga('send', 'pageview');
     };
     
