@@ -9,8 +9,9 @@ showdown.setOption('disableForced4SpacesIndentedSublists',true);
 
 
 var treloloBoardID = 'XAL44x7M';
-
-var app = angular.module("page", ['ngSanitize']).config(function($sceDelegateProvider) {  
+        
+/** Sidebar refs : https://github.com/SidebarJS/angular-sidebarjs */
+var app = angular.module("page", ['ngSanitize','ngSidebarJS']).config(function($sceDelegateProvider) {  
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
         'self',
@@ -24,33 +25,36 @@ var app = angular.module("page", ['ngSanitize']).config(function($sceDelegatePro
 app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     
     doRouter = function($scope){
-        if(!location.search || location.search.match(treloloBoardID)){
-            search = '?b/XAL44x7M';
-            $scope.isTreloloDotCom = true;
-        }else{
-            search = location.search;
-        }
-        var reg = RegExp(/^\?([bc]+)\/([^\/]+)(?:\/([^\/]+))?/);
-        var router = reg.exec(search);
-        if(router){
-            if(router[1] == 'b'){
-                $scope.boardID = router[2];
-                $scope.isHome = true;
-                if( !$scope.myData ){
-                    $scope.jsonUrl ='https://trello.com/b/'+$scope.boardID+'.json';
-                    doUpdateFromBoardJson();
-                    return;
-                }
-            }else if(router[1] == 'c'){
-                $scope.cardID = router[2];
-                if( !$scope.myData ){
-                    $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
-                    doUpdateFromCardJson();
-                    return;
-                }
+        if(typeof window.cardID != 'undefined'){
+            $scope.cardID = cardID;
+            if( !$scope.myData ){
+                $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
+                doUpdateFromCardJson();
+                return;
             }
+            // setContent($scope);
         }
-        setContent($scope);
+        else if(typeof window.boardID != 'undefined'){
+            $scope.boardID = boardID;
+        }else{
+            $scope.boardID = treloloBoardID;
+        }
+        if($scope.boardID == treloloBoardID){
+            $scope.isTreloloDotCom = true;
+        }
+
+        if( !$scope.myData ){
+            $scope.jsonUrl ='https://trello.com/b/'+$scope.boardID+'.json';
+            doUpdateFromBoardJson();
+            return;
+        }
+
+            // if( !$scope.myData ){
+            //     $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
+            //     doUpdateFromCardJson();
+            //     return;
+            // }
+            // setContent($scope);
     }
     
     setHeader = function($scope){
@@ -73,6 +77,22 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             $scope.bgTextColor = 'black';
         }
         
+        // Dynamic add script, style files to variable. Add to page on doAddSourceDynamicly function.
+        $scope.scripts = [];
+        $scope.styles = [];
+        if($scope.myData.cards.length > 0){
+            $scope.myData.cards[0].attachments.forEach(function(file){
+                regjs = RegExp(/\.js\??/);
+                regcss = RegExp(/\.css\??/);
+                if(regjs.exec(file.url)){
+                    $scope.scripts.push(file.url);
+                }
+                if(regcss.exec(file.url)){
+                    $scope.styles.push(file.url);
+                }
+            })
+        }
+        doAddSourceDynamicly($scope);
     }
     
     setMenu = function($scope){
@@ -105,10 +125,10 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
                         if(reg.exec(item.desc)){
                             var url = item.desc;
                         }else{
-                            var url = '/?c/'+item.shortLink;    
+                            var url = '/c/'+item.shortLink;    
                         }
                     }
-                    if(parent.children.length == 0){
+                    if(parent.children.length == 0 && !parent.url){
                         if(parent.title == item.name){
                             parent.url = url;
                         }else{
@@ -149,7 +169,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             }
         });
         document.title = $scope.title + ' | ' + $scope.myData.name;
-        ga('set', 'page', location.search);
+        ga('set', 'page', location.pathname);
         ga('send', 'pageview');
     };
     
@@ -183,6 +203,32 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             setContent($scope);
         });
     }
+
+    doAddSourceDynamicly = function($scope){
+
+        // part inspired by https://stackoverflow.com/questions/15939913/single-page-application-load-js-file-dynamically-based-on-partial-view
+        if($scope.scripts.length > 0){
+            var head = document.getElementsByTagName('head')[0];
+            $scope.scripts.forEach(function(path){
+                script = document.createElement('script');
+                script.setAttribute('src', path);
+                script.setAttribute('type', 'text/javascript');
+                script.setAttribute('charset', 'utf-8');
+                head.appendChild(script);
+            });
+        }
+
+        if($scope.styles.length > 0){
+            var head = document.getElementsByTagName('head')[0];
+            $scope.styles.forEach(function(path){
+                var link = document.createElement('link');
+                link.setAttribute('rel', 'stylesheet');
+                link.setAttribute('type', 'text/css');
+                link.setAttribute('href', path);
+                head.appendChild(link);
+            });
+        }
+    }
     
     $scope.changeContent = function changeContent($event){
         var obj = $event.target;
@@ -191,16 +237,22 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             return
         }else{
             history.pushState(null,'',href);
-            doRouter($scope);
+            var reg = RegExp(/^\/([bc]+)\/([^\/]+)(?:\/([^\/]+))?/);
             $event.preventDefault();
+            if(reg.exec(href)){
+                $scope.cardID = reg.exec(href)[2];
+                setContent($scope);
+                $event.preventDefault();
+            }
         }
+        $scope.$$childHead.$ctrl.SidebarJS.close();
     }
 
     $scope.doTransUrlToTrelolo = function(){
         var reg = RegExp(/^https:\/\/trello\.com\/([bc]\/[^\/]+)/);
         var regResult = reg.exec(this.urlFromTrello);
         if(regResult){
-            this.urlToTrelolo = 'http://trelolo.com/?'+regResult[1];
+            this.urlToTrelolo = 'http://trelolo.com/'+regResult[1];
             ga('send','event','generator','success',this.urlToTrelolo);
         }else{
             var reg_2 = RegExp(/trello\.com/);
@@ -231,3 +283,17 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
 
     init();
 }]);
+
+// https://codepen.io/MicoTheArtist/pen/gbDlj
+// https://stackoverflow.com/questions/30689040/angular-scroll-directive
+// https://stackoverflow.com/questions/26588300/scroll-event-in-angularjs
+app.directive("scroll", function ($window) {
+    return function(scope, element, attrs) {
+      scope.header_bg_top = -20/3;
+      
+        angular.element($window).bind("scroll", function() {
+            scope.header_bg_top = (this.pageYOffset-20)/3;
+            scope.$apply();
+        });
+    };
+});

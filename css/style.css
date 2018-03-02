@@ -14,7 +14,7 @@ body>header {
     background-position-y:33%; 
     padding: 20px 0 0 0;
     width: 100%;
-    height: calc(100vh/2);
+    height: 50vh;
 /*    position:relative;*/
 }
 header h1{
@@ -56,13 +56,13 @@ body>footer{
 inspired by https://codepen.io/philhoyt/pen/ujHzd
 */
 
-nav
+body>nav
 {
     line-height: 0;
     position: relative;
     display: block;
 }
-nav::before {
+body>nav::before {
     height: 100%;
     z-index: -1;
     content: " ";
@@ -74,7 +74,7 @@ nav::before {
     background-color: #f6f6f6;
 }
 
-nav ul
+body>nav ul
 {
 	list-style: none;
 	position: relative;
@@ -83,8 +83,8 @@ nav ul
 	padding: 0;
 }
 
-nav ul a,
-nav ul span
+body>nav ul a,
+body>nav ul span
 {
 	display:block;
 	color:#333;
@@ -92,28 +92,28 @@ nav ul span
 	font-weight:700;
 	font-size:15px;
 	line-height:2em;
-	padding:0 15px;
+	padding:15px;
 }
 
-nav ul li
+body>nav ul li
 {
 	position:relative;
 	float:left;
 	margin:0;
-	padding:15px 0;
+	/*padding:15px 0;*/
 }
 
-nav ul li.current-menu-item
+body>nav ul li.current-menu-item
 {
 	background:#ddd
 }
 
-nav ul li:hover
+body>nav ul li:hover
 {
 	background:#cccccc
 }
 
-nav ul ul
+body>nav ul ul
 {
 	display:none;
 	position:absolute;
@@ -123,22 +123,83 @@ nav ul ul
 	padding:0
 }
 
-nav ul ul li
+body>nav ul ul li
 {
 	float:none;
 	width:250px
 }
-
-nav ul ul a
-{
-	line-height:120%;
-	padding:10px 15px
+body>nav ul ul a, 
+body>nav ul ul span{
+    padding:20px 15px;
+    line-height: 120%;
 }
 
-nav ul li:hover > ul
+body>nav ul li:hover > ul
 {
 	display:block;
     z-index: 1;
+}
+
+body>nav a:hover {
+    color: black;
+}
+
+[sidebarjs] [sidebarjs-container]{
+    overflow-y: scroll;
+}
+sidebarjs nav{
+    position: relative;
+}
+sidebarjs nav ul {
+    margin: 0;
+    padding-left: 20px;
+}
+sidebarjs nav li {
+    margin: 0;
+    list-style: none;
+}
+sidebarjs nav ul::before {
+    content: "";
+    display: block;
+    content: "";
+    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 1px;
+    border-bottom: #ddd 1px solid;
+}
+sidebarjs nav li::after {
+    content: "";
+    display: block;
+    content: "";
+    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 1px;
+    border-bottom: #ddd 1px solid;
+}
+sidebarjs nav li a {
+    display: inline-block;
+    height: 40px;
+    padding: 10px 0;
+    color: black;
+    text-decoration: none;
+    position: relative;
+}
+sidebarjs nav li a::after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-bottom: #aaa 1px solid;
+    width: 100%;
+    bottom: 12px;
+}
+sidebarjs nav li span {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
 }
 
 #transfer-url-to-trelolo {
@@ -218,6 +279,46 @@ blockquote cite:before {
     content: "\2014 \2009";
 }
 
+/** RWD mobile menu */
+
+.hamburger {
+    position: absolute;
+    top: 26px;
+    right: 10px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+
+
+.hamburger>div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 4px;
+  background: #FCFCFC;
+}
+
+.hamburger>div:before {
+  top: -12px;
+}
+
+.hamburger>div:after {
+  top: 12px;
+}
+
+.hamburger>div:before,
+.hamburger>div:after {
+  content: '';
+  position:absolute;
+  width: 32px;
+  height: 4px;
+  background:#FCFCFC;
+  right: 0;
+}
+
 
 
 /** 
@@ -237,6 +338,9 @@ blockquote cite:before {
     main img{
         max-width: calc(100% - 40px);
     }
+    body>nav{
+        display: none;
+    }
 }
 
 
@@ -244,6 +348,9 @@ blockquote cite:before {
     body>*{
         width: 720px;
         margin: 0 auto;
+    }
+    .hamburger {
+        display: none;
     }
 }
 
