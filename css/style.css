@@ -92,7 +92,7 @@ body>nav ul span
 	font-weight:700;
 	font-size:15px;
 	line-height:2em;
-	padding:0 15px;
+	padding:15px;
 }
 
 body>nav ul li
@@ -100,7 +100,7 @@ body>nav ul li
 	position:relative;
 	float:left;
 	margin:0;
-	padding:15px 0;
+	/*padding:15px 0;*/
 }
 
 body>nav ul li.current-menu-item
@@ -128,17 +128,78 @@ body>nav ul ul li
 	float:none;
 	width:250px
 }
-
-body>nav ul ul a
-{
-	line-height:120%;
-	padding:10px 15px
+body>nav ul ul a, 
+body>nav ul ul span{
+    padding:20px 15px;
+    line-height: 120%;
 }
 
 body>nav ul li:hover > ul
 {
 	display:block;
     z-index: 1;
+}
+
+body>nav a:hover {
+    color: black;
+}
+
+[sidebarjs] [sidebarjs-container]{
+    overflow-y: scroll;
+}
+sidebarjs nav{
+    position: relative;
+}
+sidebarjs nav ul {
+    margin: 0;
+    padding-left: 20px;
+}
+sidebarjs nav li {
+    margin: 0;
+    list-style: none;
+}
+sidebarjs nav ul::before {
+    content: "";
+    display: block;
+    content: "";
+    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 1px;
+    border-bottom: #ddd 1px solid;
+}
+sidebarjs nav li::after {
+    content: "";
+    display: block;
+    content: "";
+    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    height: 1px;
+    border-bottom: #ddd 1px solid;
+}
+sidebarjs nav li a {
+    display: inline-block;
+    height: 40px;
+    padding: 10px 0;
+    color: black;
+    text-decoration: none;
+    position: relative;
+}
+sidebarjs nav li a::after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-bottom: #aaa 1px solid;
+    width: 100%;
+    bottom: 12px;
+}
+sidebarjs nav li span {
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
 }
 
 #transfer-url-to-trelolo {
