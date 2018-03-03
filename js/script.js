@@ -23,10 +23,13 @@ var app = angular.module("page", ['ngSanitize','ngSidebarJS']).config(function($
 });
 
 app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
-    
+
+    var reg_board_router = /^\/b\/([^\/]+)/;
+    var reg_card_router = /^\/c\/([^\/]+)/;
+
     doRouter = function($scope){
-        if(typeof window.cardID != 'undefined'){
-            $scope.cardID = cardID;
+        if(reg_card_router.test(location.pathname)){
+            $scope.cardID = reg_card_router.exec(location.pathname)[1];
             if( !$scope.myData ){
                 $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
                 doUpdateFromCardJson();
@@ -34,11 +37,12 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             }
             // setContent($scope);
         }
-        else if(typeof window.boardID != 'undefined'){
-            $scope.boardID = boardID;
+        else if(reg_board_router.test(location.pathname)){
+            $scope.boardID = reg_board_router.exec(location.pathname)[1];
         }else{
-            $scope.boardID = treloloBoardID;
+            $scope.boardID = home_boardID;
         }
+
         if($scope.boardID == treloloBoardID){
             $scope.isTreloloDotCom = true;
         }
@@ -252,7 +256,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         var reg = RegExp(/^https:\/\/trello\.com\/([bc]\/[^\/]+)/);
         var regResult = reg.exec(this.urlFromTrello);
         if(regResult){
-            this.urlToTrelolo = 'http://trelolo.com/'+regResult[1];
+            this.urlToTrelolo = 'https://trelolo.com/'+regResult[1];
             ga('send','event','generator','success',this.urlToTrelolo);
         }else{
             var reg_2 = RegExp(/trello\.com/);
