@@ -9,6 +9,7 @@ showdown.setOption('disableForced4SpacesIndentedSublists',true);
 
 
 var treloloBoardID = 'XAL44x7M';
+var isElseBoardAvailable = 1;
         
 /** Sidebar refs : https://github.com/SidebarJS/angular-sidebarjs */
 var app = angular.module("page", ['ngSanitize','ngSidebarJS']).config(function($sceDelegateProvider) {  
@@ -23,10 +24,13 @@ var app = angular.module("page", ['ngSanitize','ngSidebarJS']).config(function($
 });
 
 app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
-    
+
+    var reg_board_router = /^\/b\/([^\/]+)/;
+    var reg_card_router = /^\/c\/([^\/]+)/;
+
     doRouter = function($scope){
-        if(typeof window.cardID != 'undefined'){
-            $scope.cardID = cardID;
+        if(typeof window.cardID != 'undefined' || reg_card_router.test(location.pathname)){
+            $scope.cardID = cardID ? cardID : reg_card_router.exec(location.pathname)[1];
             if( !$scope.myData ){
                 $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
                 doUpdateFromCardJson();
@@ -34,11 +38,12 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             }
             // setContent($scope);
         }
-        else if(typeof window.boardID != 'undefined'){
-            $scope.boardID = boardID;
+        else if(typeof window.boardID != 'undefined' || reg_board_router.test(location.pathname)){
+            $scope.boardID = boardID ? boardID : reg_board_router.exec(location.pathname)[1];
         }else{
             $scope.boardID = treloloBoardID;
         }
+
         if($scope.boardID == treloloBoardID){
             $scope.isTreloloDotCom = true;
         }
