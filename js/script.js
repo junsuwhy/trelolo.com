@@ -9,7 +9,6 @@ showdown.setOption('disableForced4SpacesIndentedSublists',true);
 
 
 var treloloBoardID = 'XAL44x7M';
-var isElseBoardAvailable = 1;
         
 /** Sidebar refs : https://github.com/SidebarJS/angular-sidebarjs */
 var app = angular.module("page", ['ngSanitize','ngSidebarJS']).config(function($sceDelegateProvider) {  
@@ -29,8 +28,8 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
     var reg_card_router = /^\/c\/([^\/]+)/;
 
     doRouter = function($scope){
-        if(typeof window.cardID != 'undefined' || reg_card_router.test(location.pathname)){
-            $scope.cardID = cardID ? cardID : reg_card_router.exec(location.pathname)[1];
+        if(reg_card_router.test(location.pathname)){
+            $scope.cardID = reg_card_router.exec(location.pathname)[1];
             if( !$scope.myData ){
                 $scope.jsonUrl ='https://trello.com/c/'+$scope.cardID+'.json';
                 doUpdateFromCardJson();
@@ -38,10 +37,10 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             }
             // setContent($scope);
         }
-        else if(typeof window.boardID != 'undefined' || reg_board_router.test(location.pathname)){
-            $scope.boardID = boardID ? boardID : reg_board_router.exec(location.pathname)[1];
+        else if(reg_board_router.test(location.pathname)){
+            $scope.boardID = reg_board_router.exec(location.pathname)[1];
         }else{
-            $scope.boardID = treloloBoardID;
+            $scope.boardID = home_boardID;
         }
 
         if($scope.boardID == treloloBoardID){
@@ -257,7 +256,7 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         var reg = RegExp(/^https:\/\/trello\.com\/([bc]\/[^\/]+)/);
         var regResult = reg.exec(this.urlFromTrello);
         if(regResult){
-            this.urlToTrelolo = 'http://trelolo.com/'+regResult[1];
+            this.urlToTrelolo = 'https://trelolo.com/'+regResult[1];
             ga('send','event','generator','success',this.urlToTrelolo);
         }else{
             var reg_2 = RegExp(/trello\.com/);

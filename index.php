@@ -22,7 +22,7 @@ function main(){
   if($boardID !== HOME_BOARD_ID){
     $replace = array(
       '<title>Trelolo.com</title>' => "<title>{$page->title}</title>",
-      '<meta name="description" content="Trelolo 是一個把你的 Trello 公開板轉成網站的服務">' => '<meta name="description" content="{$pge->title}">',
+      '<meta name="description" content="Trelolo 是一個把你的 Trello 公開板轉成網站的服務">' => '<meta name="description" content="'.$page->title.'">',
       '<meta property="og:url" content="https://trelolo.com" />' => '<meta property="og:url" content="http://trelolo.com'.$page->url.'" />',
       '<meta property="og:title" content="Trelolo.com" />' => '<meta property="og:title" content="'.$page->title.'" />',
       '<meta property="og:description" content="Trelolo 是一個把你的 Trello 公開板轉成網站的服務" />' => '<meta property="og:description" content="'.$page->title.'" />',
@@ -34,14 +34,8 @@ function main(){
     );
   }
   foreach ($replace as $key => $value) {
-      $html = str_replace($key, $value, $html);
-    }
-    if($boardID){
-      $html = str_replace('window.boardID = undefined;',  'window.boardID = "'.$boardID.'";', $html);
-    }
-    if($cardID){
-      $html = str_replace('window.cardID = undefined;',  'window.cardID = "'.$cardID.'";', $html);
-    }
+    $html = str_replace($key, $value, $html);
+  }
   print($html);
 }
 
