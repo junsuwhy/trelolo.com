@@ -1,2 +1,2 @@
 RewriteEngine on
-RewriteRule "(.*)" index.php?q=$0 [QSA]
+RewriteRule "^([bc]\/[^\/]+)" index.php?q=$0 [QSA]
