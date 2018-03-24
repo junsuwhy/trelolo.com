@@ -84,18 +84,32 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
         // Dynamic add script, style files to variable. Add to page on doAddSourceDynamicly function.
         $scope.scripts = [];
         $scope.styles = [];
-        if($scope.myData.cards.length > 0){
-            $scope.myData.cards[0].attachments.forEach(function(file){
-                regjs = RegExp(/\.js\??/);
-                regcss = RegExp(/\.css\??/);
-                if(regjs.exec(file.url)){
-                    $scope.scripts.push(file.url);
-                }
-                if(regcss.exec(file.url)){
-                    $scope.styles.push(file.url);
-                }
-            })
-        }
+        // Get first active list;
+        var first_list_id = null;
+        $scope.myData.lists.forEach(function(list){
+            if(!list.closed && !first_list_id){
+                first_list_id = list.id;
+            }
+        });
+
+        // Get first active card;
+        var first_card = null;
+        $scope.myData.cards.forEach(function(card){
+            if(!card.closed && !first_card && card.idList == first_list_id){
+                first_card = card;
+            }
+        });
+
+        first_card.attachments.forEach(function(file){
+            regjs = RegExp(/\.js\??/);
+            regcss = RegExp(/\.css\??/);
+            if(regjs.exec(file.url)){
+                $scope.scripts.push(file.url);
+            }
+            if(regcss.exec(file.url)){
+                $scope.styles.push(file.url);
+            }
+        });
         doAddSourceDynamicly($scope);
     }
     
