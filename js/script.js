@@ -219,6 +219,8 @@ app.controller('MgCtrl',['$scope','$http','$sce',function($scope, $http, $sce){
             setHeader($scope);
             setMenu($scope);
             setContent($scope);
+        }, function(response){
+            $scope.is_error = true;
         });
     }
 
